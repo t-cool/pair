@@ -4,7 +4,802 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ペアメーカー</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #007bff;
+    border-radius: 8px;
+    padding: 10px;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.hamburger-menu:hover {
+    background-color: #0056b3;
+}
+
+.hamburger-line {
+    width: 24px;
+    height: 3px;
+    background-color: white;
+    margin: 3px 0;
+    border-radius: 2px;
+    transition: 0.3s;
+    display: block;
+}
+
+/* Navigation Overlay */
+.nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-overlay.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+.nav-menu {
+    background-color: white;
+    border-radius: 15px;
+    padding: 30px;
+    min-width: 280px;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.nav-overlay.active .nav-menu {
+    transform: scale(1);
+}
+
+.nav-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.nav-close:hover {
+    color: #333;
+    background-color: #f0f0f0;
+}
+
+.nav-menu h2 {
+    margin: 0 0 25px 0;
+    color: #333;
+    font-size: 24px;
+}
+
+.nav-menu nav {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.nav-menu nav a {
+    display: block;
+    padding: 18px 25px;
+    text-decoration: none;
+    color: #333;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+}
+
+.nav-menu nav a:hover {
+    background-color: #007bff;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+}
+
+/* Screen Management */
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+.container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 90%;
+    margin: 0 auto;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #333;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.input-section {
+    margin-bottom: 30px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus, textarea:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+.button-group {
+    text-align: center;
+    margin: 20px 0;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.secondary-btn {
+    background-color: #6c757d;
+}
+
+.secondary-btn:hover {
+    background-color: #545b62;
+}
+
+.success-btn {
+    background-color: #28a745;
+}
+
+.success-btn:hover {
+    background-color: #1e7e34;
+}
+
+#pairResults {
+    margin-top: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+tr:hover {
+    background-color: #e9ecef;
+}
+
+.info-text {
+    color: #666;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.student-count {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/* Class Selection */
+.class-selection {
+    margin-bottom: 20px;
+}
+
+/* Pair Creation Section */
+.pair-creation-section {
+    margin-bottom: 40px;
+}
+
+.class-selection-main {
+    margin-bottom: 30px;
+}
+
+.class-selection-main label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.class-selection-main select {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.class-selection-main select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+
+/* Classroom Layout Styles */
+.classroom-layout {
+    margin-top: 30px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+}
+
+.blackboard {
+    background: linear-gradient(135deg, #4a7c59 0%, #3d6b47 100%);
+    height: 50px;
+    width: 100%;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border: 3px solid #2d4a35;
+    transition: all 0.3s ease;
+}
+
+.blackboard:hover {
+    background: linear-gradient(135deg, #5a8c69 0%, #4d7b57 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.blackboard-text {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.classroom-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 15px;
+    max-width: 100%;
+}
+
+.desk-pair {
+    background-color: white;
+    border: 2px solid #333;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.desk-pair:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.student-name {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin: 4px 0;
+    text-align: center;
+    font-weight: bold;
+    font-size: 22px;
+    color: #333;
+}
+
+.student-name.empty {
+    background-color: #e9ecef;
+    color: #6c757d;
+    font-style: italic;
+    border-style: dashed;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+select:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+/* Class Management Styles */
+.class-list-section {
+    margin-bottom: 30px;
+}
+
+.no-classes {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 20px;
+}
+
+.class-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+}
+
+.class-info h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.class-info p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.class-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-btn {
+    background-color: #ffc107;
+    color: #212529;
+    padding: 8px 16px;
+    font-size: 14px;
+    margin: 0;
+}
+
+.edit-btn:hover {
+    background-color: #e0a800;
+}
+
+.use-btn {
+    background-color: #17a2b8;
+    padding: 8px 16px;
+    font-size: 14px;
+    margin: 0;
+}
+
+.use-btn:hover {
+    background-color: #138496;
+}
+
+.absence-btn {
+    background-color: #fd7e14;
+    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+    margin: 0;
+}
+
+.absence-btn:hover {
+    background-color: #e8660c;
+}
+
+.danger-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.danger-btn:hover {
+    background-color: #c82333;
+}
+
+/* Edit Section */
+.edit-section {
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #f8f9ff;
+}
+
+.edit-class-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.edit-class-header span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.student-edit-section h4 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.student-edit-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.student-edit-item input {
+    flex: 1;
+    margin: 0;
+}
+
+.remove-btn {
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 12px;
+    font-size: 14px;
+    margin: 0;
+}
+
+.remove-btn:hover {
+    background-color: #c82333;
+}
+
+.add-student-section {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    align-items: end;
+}
+
+.add-student-section input {
+    flex: 1;
+    margin: 0;
+}
+
+.add-student-section button {
+    margin: 0;
+    padding: 10px 20px;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+        padding-top: 80px;
+    }
+    
+    .container {
+        padding: 20px;
+    }
+    
+    .hamburger-menu {
+        width: 45px;
+        height: 45px;
+        top: 15px;
+        left: 15px;
+    }
+    
+    .nav-menu {
+        min-width: 250px;
+        padding: 25px;
+        margin: 0 15px;
+    }
+    
+    .nav-menu h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .nav-menu nav a {
+        padding: 15px 20px;
+        font-size: 15px;
+    }
+    
+    button {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+    }
+    
+    .button-group {
+        text-align: left;
+    }
+    
+    .class-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .class-actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+    
+    .class-actions button {
+        flex: 1;
+        margin: 0 5px;
+    }
+    
+    .edit-class-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .student-edit-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
+    }
+    
+    .add-student-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    
+    .classroom-layout {
+        padding: 15px;
+    }
+    
+    .blackboard {
+        height: 40px;
+        margin-bottom: 15px;
+    }
+    
+    .blackboard-text {
+        font-size: 18px;
+    }
+    
+    .classroom-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(10, 1fr);
+        gap: 12px;
+    }
+    
+    .desk-pair {
+        padding: 8px;
+        min-height: 60px;
+    }
+    
+    .student-name {
+        padding: 6px 8px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+    from {opacity: 0; transform: translateY(-30px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    border-radius: 10px 10px 0 0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.modal-close {
+    color: #666;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.modal-close:hover {
+    color: #333;
+    background-color: #e9ecef;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-body p {
+    margin: 0 0 20px 0;
+    font-weight: bold;
+    color: #007bff;
+    font-size: 18px;
+}
+
+.modal-body h4 {
+    margin: 0 0 15px 0;
+    color: #333;
+}
+
+.absence-student-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.absence-student-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    margin: 5px 0;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+.absence-student-item:hover {
+    background-color: #e9ecef;
+}
+
+.absence-student-item input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.absence-student-item label {
+    cursor: pointer;
+    margin: 0;
+    flex: 1;
+    font-weight: normal;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
+}
+    </style>
 </head>
 <body>
     <!-- Hamburger Menu -->
@@ -124,6 +919,538 @@
         </div>
     </div>
 
-    <script src="main.js"></script>
+    <script>
+// Global variables
+let currentEditingClass = null;
+let currentAbsenceClass = null;
+let currentAbsentStudents = [];
+
+// Navigation menu management
+function toggleMenu() {
+    const overlay = document.getElementById('navOverlay');
+    overlay.classList.toggle('active');
+}
+
+// Screen management
+function showScreen(screenName) {
+    const screens = document.querySelectorAll('.screen');
+    screens.forEach(screen => screen.classList.remove('active'));
+    
+    if (screenName === 'pair') {
+        document.getElementById('pairScreen').classList.add('active');
+    } else if (screenName === 'management') {
+        document.getElementById('managementScreen').classList.add('active');
+        loadClassList();
+    }
+}
+
+// New class creation functions
+function showNewClassForm() {
+    document.getElementById('newClassSection').style.display = 'block';
+    document.getElementById('editClassSection').style.display = 'none';
+}
+
+function cancelNewClass() {
+    document.getElementById('newClassSection').style.display = 'none';
+    document.getElementById('newClassName').value = '';
+    document.getElementById('newClassStudentList').value = '';
+}
+
+function saveNewClass() {
+    const className = document.getElementById('newClassName').value.trim();
+    const studentList = document.getElementById('newClassStudentList').value.trim();
+    
+    if (!className) {
+        alert('クラス名を入力してください。');
+        return;
+    }
+    
+    if (!studentList) {
+        alert('生徒名簿を入力してください。');
+        return;
+    }
+    
+    const students = studentList.split('\n').filter(name => name.trim() !== '');
+    
+    if (students.length === 0) {
+        alert('有効な生徒名が入力されていません。');
+        return;
+    }
+    
+    const cleanStudents = students.map(name => name.trim());
+    
+    // Check if class already exists
+    const classes = getAllClasses();
+    if (classes[className]) {
+        if (!confirm('同じ名前のクラスが既に存在します。上書きしますか？')) {
+            return;
+        }
+    }
+    
+    saveClass(className, cleanStudents);
+    alert(className + 'のクラスデータ（' + cleanStudents.length + '名）を作成しました。');
+    
+    // Clear form and reload class list
+    document.getElementById('newClassName').value = '';
+    document.getElementById('newClassStudentList').value = '';
+    document.getElementById('newClassSection').style.display = 'none';
+    loadClassList();
+    updateClassSelectorMain();
+}
+
+// Class storage management
+function getAllClasses() {
+    const classes = localStorage.getItem('pairMakerClasses');
+    return classes ? JSON.parse(classes) : {};
+}
+
+function saveClass(className, students) {
+    const classes = getAllClasses();
+    classes[className] = {
+        students: students,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+    };
+    localStorage.setItem('pairMakerClasses', JSON.stringify(classes));
+}
+
+function deleteClassData(className) {
+    const classes = getAllClasses();
+    delete classes[className];
+    localStorage.setItem('pairMakerClasses', JSON.stringify(classes));
+}
+
+// Updated save function
+function saveStudentData() {
+    const className = document.getElementById('className').value.trim();
+    const studentList = document.getElementById('studentList').value.trim();
+    
+    if (!className) {
+        alert('クラス名を入力してください。');
+        return;
+    }
+    
+    if (!studentList) {
+        alert('生徒名簿を入力してください。');
+        return;
+    }
+    
+    const students = studentList.split('\n').filter(name => name.trim() !== '');
+    
+    if (students.length === 0) {
+        alert('有効な生徒名が入力されていません。');
+        return;
+    }
+    
+    const cleanStudents = students.map(name => name.trim());
+    
+    saveClass(className, cleanStudents);
+    alert(className + 'のクラスデータ（' + cleanStudents.length + '名）を保存しました。');
+    updateStudentCount(cleanStudents.length);
+    updateClassSelectorMain();
+}
+
+// Class selector management for pair creation
+function updateClassSelectorMain() {
+    const selector = document.getElementById('classSelectorMain');
+    const classes = getAllClasses();
+    
+    if (!selector) return;
+    
+    selector.innerHTML = '<option value="">-- クラスを選択してください --</option>';
+    
+    Object.keys(classes).forEach(className => {
+        const option = document.createElement('option');
+        option.value = className;
+        option.textContent = className + ' (' + classes[className].students.length + '名)';
+        selector.appendChild(option);
+    });
+}
+
+// New function for pair creation screen
+function createPairsFromSelection() {
+    const selector = document.getElementById('classSelectorMain');
+    const selectedClass = selector.value;
+    
+    if (selectedClass) {
+        const classes = getAllClasses();
+        if (classes[selectedClass]) {
+            // Clear absent students when switching classes
+            if (currentAbsenceClass !== selectedClass) {
+                currentAbsentStudents = [];
+                currentAbsenceClass = null;
+            }
+            // Automatically create pairs
+            createPairsForClass(selectedClass, classes[selectedClass].students);
+        }
+    } else {
+        document.getElementById('pairResults').innerHTML = '';
+        // Clear absent students when no class is selected
+        currentAbsentStudents = [];
+        currentAbsenceClass = null;
+    }
+}
+
+function createPairsManual() {
+    const selector = document.getElementById('classSelectorMain');
+    const selectedClass = selector.value;
+    
+    if (selectedClass) {
+        const classes = getAllClasses();
+        if (classes[selectedClass]) {
+            // Check if there are absent students for this class
+            if (currentAbsenceClass === selectedClass && currentAbsentStudents.length > 0) {
+                // Filter out absent students
+                const presentStudents = classes[selectedClass].students.filter(student => 
+                    !currentAbsentStudents.includes(student)
+                );
+                createPairsForClass(selectedClass, presentStudents);
+            } else {
+                // Use all students
+                createPairsForClass(selectedClass, classes[selectedClass].students);
+            }
+            
+            // Scroll to blackboard after pair creation
+            setTimeout(() => {
+                const blackboard = document.querySelector('.blackboard');
+                if (blackboard) {
+                    blackboard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
+        }
+    }
+}
+
+function createPairsForClass(className, students) {
+    if (students.length < 2) {
+        alert('ペアを作成するには最低2名の生徒が必要です。');
+        return;
+    }
+    
+    const shuffledStudents = students.slice().sort(() => Math.random() - 0.5);
+    const pairs = [];
+    
+    for (let i = 0; i < shuffledStudents.length; i += 2) {
+        if (i + 1 < shuffledStudents.length) {
+            pairs.push([shuffledStudents[i], shuffledStudents[i + 1]]);
+        } else {
+            pairs.push([shuffledStudents[i], '（1人）']);
+        }
+    }
+    
+    displayPairs(pairs, className);
+}
+
+// Class list management
+function loadClassList() {
+    const classes = getAllClasses();
+    const classList = document.getElementById('classList');
+    
+    if (Object.keys(classes).length === 0) {
+        classList.innerHTML = '<p class="no-classes">保存されたクラスがありません。</p>';
+        return;
+    }
+    
+    let html = '';
+    Object.entries(classes).forEach(function(entry) {
+        const className = entry[0];
+        const classData = entry[1];
+        html += '<div class="class-item">';
+        html += '<div class="class-info">';
+        html += '<h4>' + className + '</h4>';
+        html += '<p>生徒数: ' + classData.students.length + '名</p>';
+        html += '<p>最終更新: ' + new Date(classData.updatedAt).toLocaleDateString('ja-JP') + '</p>';
+        html += '</div>';
+        html += '<div class="class-actions">';
+        html += '<button onclick="editClass(\'' + className + '\')" class="edit-btn">編集</button>';
+        html += '<button onclick="useClass(\'' + className + '\')" class="use-btn">使用</button>';
+        html += '<button onclick="openAbsenceModal(\'' + className + '\')" class="absence-btn">欠席管理</button>';
+        html += '</div>';
+        html += '</div>';
+    });
+    
+    classList.innerHTML = html;
+}
+
+function editClass(className) {
+    const classes = getAllClasses();
+    if (!classes[className]) return;
+    
+    currentEditingClass = className;
+    document.getElementById('editClassName').textContent = className;
+    document.getElementById('editClassSection').style.display = 'block';
+    
+    loadStudentEditList(classes[className].students);
+}
+
+function loadStudentEditList(students) {
+    const editList = document.getElementById('studentEditList');
+    
+    let html = '';
+    students.forEach(function(student, index) {
+        html += '<div class="student-edit-item">';
+        html += '<input type="text" value="' + student + '" onchange="updateStudentName(' + index + ', this.value)">';
+        html += '<button onclick="removeStudent(' + index + ')" class="remove-btn">削除</button>';
+        html += '</div>';
+    });
+    
+    editList.innerHTML = html;
+}
+
+function updateStudentName(index, newName) {
+    if (!currentEditingClass) return;
+    
+    const classes = getAllClasses();
+    classes[currentEditingClass].students[index] = newName.trim();
+    localStorage.setItem('pairMakerClasses', JSON.stringify(classes));
+}
+
+function removeStudent(index) {
+    if (!currentEditingClass) return;
+    
+    const classes = getAllClasses();
+    classes[currentEditingClass].students.splice(index, 1);
+    localStorage.setItem('pairMakerClasses', JSON.stringify(classes));
+    
+    loadStudentEditList(classes[currentEditingClass].students);
+}
+
+function addStudent() {
+    const newName = document.getElementById('newStudentName').value.trim();
+    if (!newName || !currentEditingClass) return;
+    
+    const classes = getAllClasses();
+    classes[currentEditingClass].students.push(newName);
+    localStorage.setItem('pairMakerClasses', JSON.stringify(classes));
+    
+    document.getElementById('newStudentName').value = '';
+    loadStudentEditList(classes[currentEditingClass].students);
+}
+
+function saveClassChanges() {
+    if (!currentEditingClass) return;
+    
+    const classes = getAllClasses();
+    classes[currentEditingClass].updatedAt = new Date().toISOString();
+    localStorage.setItem('pairMakerClasses', JSON.stringify(classes));
+    
+    alert('変更を保存しました。');
+    loadClassList();
+}
+
+function deleteClass() {
+    if (!currentEditingClass) return;
+    
+    if (confirm(currentEditingClass + 'を削除してもよろしいですか？')) {
+        deleteClassData(currentEditingClass);
+        document.getElementById('editClassSection').style.display = 'none';
+        currentEditingClass = null;
+        loadClassList();
+        updateClassSelectorMain();
+    }
+}
+
+function cancelEdit() {
+    document.getElementById('editClassSection').style.display = 'none';
+    document.getElementById('newClassSection').style.display = 'none';
+    currentEditingClass = null;
+    loadClassList();
+}
+
+function useClass(className) {
+    const classes = getAllClasses();
+    if (!classes[className]) return;
+    
+    // Set the class selector to the selected class
+    document.getElementById('classSelectorMain').value = className;
+    
+    // Automatically create pairs for the selected class
+    createPairsForClass(className, classes[className].students);
+    
+    showScreen('pair');
+}
+
+// Legacy support for old localStorage format
+function migrateLegacyData() {
+    const oldData = localStorage.getItem('pairMakerData');
+    if (oldData) {
+        try {
+            const data = JSON.parse(oldData);
+            if (data.className && data.students) {
+                saveClass(data.className, data.students);
+                localStorage.removeItem('pairMakerData');
+            }
+        } catch (error) {
+            console.log('レガシーデータの移行に失敗しました。');
+        }
+    }
+}
+
+function updateStudentCount(count) {
+    document.getElementById('countNumber').textContent = count;
+    document.getElementById('studentCount').style.display = 'block';
+}
+
+function createPairs() {
+    const studentList = document.getElementById('studentList').value.trim();
+    const className = document.getElementById('className').value.trim();
+    
+    if (!studentList) {
+        alert('生徒名簿を入力してください。');
+        return;
+    }
+    
+    const students = studentList.split('\n').filter(name => name.trim() !== '').map(name => name.trim());
+    
+    if (students.length < 2) {
+        alert('ペアを作成するには最低2名の生徒が必要です。');
+        return;
+    }
+    
+    const shuffledStudents = students.slice().sort(() => Math.random() - 0.5);
+    const pairs = [];
+    
+    for (let i = 0; i < shuffledStudents.length; i += 2) {
+        if (i + 1 < shuffledStudents.length) {
+            pairs.push([shuffledStudents[i], shuffledStudents[i + 1]]);
+        } else {
+            pairs.push([shuffledStudents[i], '（1人）']);
+        }
+    }
+    
+    displayPairs(pairs, className || 'クラス');
+}
+
+function displayPairs(pairs, className) {
+    const resultsDiv = document.getElementById('pairResults');
+    
+    let html = '<div class="classroom-layout">';
+    html += '<div class="blackboard" onclick="createPairsManual()" style="cursor: pointer;">';
+    html += '<span class="blackboard-text">黒板（クリックでペア再作成）</span>';
+    html += '</div>';
+    html += '<div class="classroom-grid">';
+    
+    pairs.forEach(function(pair, index) {
+        html += '<div class="desk-pair">';
+        html += '<div class="student-name">' + pair[0] + '</div>';
+        if (pair[1] !== '（1人）') {
+            html += '<div class="student-name">' + pair[1] + '</div>';
+        } else {
+            html += '<div class="student-name empty">空席</div>';
+        }
+        html += '</div>';
+    });
+    
+    html += '</div>';
+    html += '</div>';
+    
+    resultsDiv.innerHTML = html;
+}
+
+// Absence Management Functions
+function openAbsenceModal(className) {
+    const classes = getAllClasses();
+    if (!classes[className]) return;
+    
+    currentAbsenceClass = className;
+    document.getElementById('absenceClassName').textContent = className + 'の欠席管理';
+    
+    const studentList = document.getElementById('absenceStudentList');
+    let html = '';
+    
+    classes[className].students.forEach(function(student, index) {
+        html += '<div class="absence-student-item">';
+        html += '<input type="checkbox" id="absent_' + index + '" value="' + student + '">';
+        html += '<label for="absent_' + index + '">' + student + '</label>';
+        html += '</div>';
+    });
+    
+    studentList.innerHTML = html;
+    document.getElementById('absenceModal').style.display = 'block';
+}
+
+function closeAbsenceModal() {
+    document.getElementById('absenceModal').style.display = 'none';
+    // Don't clear currentAbsenceClass here - keep it for future pair generation
+    
+    // Clear all checkboxes
+    const checkboxes = document.querySelectorAll('#absenceStudentList input[type="checkbox"]');
+    checkboxes.forEach(checkbox => checkbox.checked = false);
+}
+
+function createPairsWithAbsences() {
+    if (!currentAbsenceClass) return;
+    
+    const classes = getAllClasses();
+    if (!classes[currentAbsenceClass]) return;
+    
+    // Get absent students
+    const checkboxes = document.querySelectorAll('#absenceStudentList input[type="checkbox"]:checked');
+    const absentStudents = Array.from(checkboxes).map(checkbox => checkbox.value);
+    
+    // Store absent students and class globally for future use
+    currentAbsentStudents = absentStudents;
+    // currentAbsenceClass is already set in openAbsenceModal, keep it
+    
+    // Filter out absent students from the class
+    const presentStudents = classes[currentAbsenceClass].students.filter(student => 
+        !absentStudents.includes(student)
+    );
+    
+    if (presentStudents.length < 2) {
+        alert('出席者が2名未満のため、ペアを作成できません。');
+        return;
+    }
+    
+    // Create pairs with present students only
+    createPairsForClass(currentAbsenceClass, presentStudents);
+    
+    // Close modal and switch to pair screen
+    closeAbsenceModal();
+    showScreen('pair');
+    
+    // Update the class selector to show the current class
+    document.getElementById('classSelectorMain').value = currentAbsenceClass;
+}
+
+// Initialize
+window.onload = function() {
+    migrateLegacyData();
+    updateClassSelectorMain();
+    
+    const classes = getAllClasses();
+    if (Object.keys(classes).length > 0) {
+        const firstClassName = Object.keys(classes)[0];
+        const firstClass = classes[firstClassName];
+        // For management screen compatibility
+        if (document.getElementById('countNumber')) {
+            updateStudentCount(firstClass.students.length);
+        }
+    }
+    
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+        const modal = document.getElementById('absenceModal');
+        if (event.target === modal) {
+            closeAbsenceModal();
+        }
+    };
+    
+    // Add spacebar functionality for pair regeneration
+    document.addEventListener('keydown', function(event) {
+        // Check if spacebar is pressed and we're on the pair screen with pairs displayed
+        if (event.code === 'Space' && document.getElementById('pairScreen').classList.contains('active')) {
+            const pairResults = document.getElementById('pairResults');
+            const selector = document.getElementById('classSelectorMain');
+            
+            // Only regenerate if there are pairs displayed and a class is selected
+            if (pairResults.innerHTML.trim() !== '' && selector.value) {
+                event.preventDefault(); // Prevent page scroll
+                createPairsManual();
+            }
+        }
+    });
+};
+    </script>
 </body>
 </html>
