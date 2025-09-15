@@ -881,6 +881,11 @@ select:focus {
                 </div>
                 
                 <div class="student-edit-section">
+                    <div class="input-section">
+                        <label for="editClassNameInput">クラス名:</label>
+                        <input type="text" id="editClassNameInput" placeholder="クラス名を入力">
+                    </div>
+                    
                     <h4>生徒一覧</h4>
                     <div id="studentEditList"></div>
                     
@@ -1178,6 +1183,7 @@ function editClass(className) {
     
     currentEditingClass = className;
     document.getElementById('editClassName').textContent = className;
+    document.getElementById('editClassNameInput').value = className;
     document.getElementById('editClassSection').style.display = 'block';
     
     loadStudentEditList(classes[className].students);
@@ -1230,12 +1236,45 @@ function addStudent() {
 function saveClassChanges() {
     if (!currentEditingClass) return;
     
+    const newClassName = document.getElementById('editClassNameInput').value.trim();
+    if (!newClassName) {
+        alert('クラス名を入力してください。');
+        return;
+    }
+    
     const classes = getAllClasses();
-    classes[currentEditingClass].updatedAt = new Date().toISOString();
+    
+    // Check if the class name has changed
+    if (newClassName !== currentEditingClass) {
+        // Check if the new class name already exists
+        if (classes[newClassName]) {
+            alert('同じ名前のクラスが既に存在します。');
+            return;
+        }
+        
+        // Create a new class with the new name and copy the data
+        classes[newClassName] = {
+            students: classes[currentEditingClass].students,
+            createdAt: classes[currentEditingClass].createdAt,
+            updatedAt: new Date().toISOString()
+        };
+        
+        // Delete the old class
+        delete classes[currentEditingClass];
+        
+        // Update the current editing class name
+        currentEditingClass = newClassName;
+        document.getElementById('editClassName').textContent = newClassName;
+    } else {
+        // Just update the timestamp if name hasn't changed
+        classes[currentEditingClass].updatedAt = new Date().toISOString();
+    }
+    
     localStorage.setItem('pairMakerClasses', JSON.stringify(classes));
     
     alert('変更を保存しました。');
     loadClassList();
+    updateClassSelectorMain();
 }
 
 function deleteClass() {
@@ -1253,6 +1292,7 @@ function deleteClass() {
 function cancelEdit() {
     document.getElementById('editClassSection').style.display = 'none';
     document.getElementById('newClassSection').style.display = 'none';
+    document.getElementById('editClassNameInput').value = '';
     currentEditingClass = null;
     loadClassList();
 }
