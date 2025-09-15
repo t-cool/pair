@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ペアメーカー</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu" onclick="toggleMenu()">
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+    </div>
+    
+    <!-- Navigation Overlay -->
+    <div id="navOverlay" class="nav-overlay">
+        <div class="nav-menu">
+            <button class="nav-close" onclick="toggleMenu()">&times;</button>
+            <h2>メニュー</h2>
+            <nav>
+                <a href="#" onclick="showScreen('management'); toggleMenu();">クラス管理</a>
+                <a href="#" onclick="showScreen('pair'); toggleMenu();">ペア作成</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Pair Creation Screen -->
+        <div id="pairScreen" class="screen active">            
+            <div class="pair-creation-section">
+                <div class="class-selection-main">
+                    <select id="classSelectorMain" onchange="createPairsFromSelection()">
+                        <option value="">-- クラスを選択してください --</option>
+                    </select>
+                </div>
+                
+            </div>
+            
+            <div id="pairResults"></div>
+        </div>
+        
+        <!-- Class Management Screen -->
+        <div id="managementScreen" class="screen">
+            <h1>クラス管理</h1>
+            
+            <div class="class-list-section">
+                <h2>クラス一覧</h2>
+                <div id="classList"></div>
+                
+                <div class="button-group">
+                    <button onclick="showNewClassForm()" class="success-btn">新しいクラスを作成</button>
+                </div>
+            </div>
+            
+            <!-- New Class Creation Form -->
+            <div id="newClassSection" class="edit-section" style="display: none;">
+                <h3>新しいクラス作成</h3>
+                <div class="edit-class-header">
+                    <span>新規クラス</span>
+                    <button onclick="cancelNewClass()" class="secondary-btn">キャンセル</button>
+                </div>
+                
+                <div class="student-edit-section">
+                    <div class="input-section">
+                        <label for="newClassName">クラス名:</label>
+                        <input type="text" id="newClassName" placeholder="例: 3年A組">
+                        
+                        <label for="newClassStudentList" style="margin-top: 15px;">生徒名簿（1行に1名ずつ入力）:</label>
+                        <textarea id="newClassStudentList" placeholder="田中太郎&#10;佐藤花子&#10;山田次郎&#10;..."></textarea>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button onclick="saveNewClass()" class="success-btn">クラスを作成</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Class Edit Section -->
+            <div id="editClassSection" class="edit-section" style="display: none;">
+                <h3>クラス編集</h3>
+                <div class="edit-class-header">
+                    <span id="editClassName"></span>
+                    <button onclick="cancelEdit()" class="secondary-btn">編集をキャンセル</button>
+                </div>
+                
+                <div class="student-edit-section">
+                    <h4>生徒一覧</h4>
+                    <div id="studentEditList"></div>
+                    
+                    <div class="add-student-section">
+                        <input type="text" id="newStudentName" placeholder="新しい生徒名">
+                        <button onclick="addStudent()" class="success-btn">生徒を追加</button>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button onclick="saveClassChanges()" class="success-btn">変更を保存</button>
+                        <button onclick="deleteClass()" class="danger-btn">クラスを削除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Absence Management Modal -->
+    <div id="absenceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>欠席管理</h3>
+                <span class="modal-close" onclick="closeAbsenceModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="absenceClassName"></p>
+                <h4>欠席者を選択してください</h4>
+                <div id="absenceStudentList" class="absence-student-list">
+                    <!-- Students will be populated here -->
+                </div>
+                <div class="modal-actions">
+                    <button onclick="createPairsWithAbsences()" class="success-btn">ペア作成</button>
+                    <button onclick="closeAbsenceModal()" class="secondary-btn">キャンセル</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,794 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #007bff;
+    border-radius: 8px;
+    padding: 10px;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.hamburger-menu:hover {
+    background-color: #0056b3;
+}
+
+.hamburger-line {
+    width: 24px;
+    height: 3px;
+    background-color: white;
+    margin: 3px 0;
+    border-radius: 2px;
+    transition: 0.3s;
+    display: block;
+}
+
+/* Navigation Overlay */
+.nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-overlay.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+.nav-menu {
+    background-color: white;
+    border-radius: 15px;
+    padding: 30px;
+    min-width: 280px;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.nav-overlay.active .nav-menu {
+    transform: scale(1);
+}
+
+.nav-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.nav-close:hover {
+    color: #333;
+    background-color: #f0f0f0;
+}
+
+.nav-menu h2 {
+    margin: 0 0 25px 0;
+    color: #333;
+    font-size: 24px;
+}
+
+.nav-menu nav {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.nav-menu nav a {
+    display: block;
+    padding: 18px 25px;
+    text-decoration: none;
+    color: #333;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+}
+
+.nav-menu nav a:hover {
+    background-color: #007bff;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+}
+
+/* Screen Management */
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+.container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 90%;
+    margin: 0 auto;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #333;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.input-section {
+    margin-bottom: 30px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus, textarea:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+.button-group {
+    text-align: center;
+    margin: 20px 0;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.secondary-btn {
+    background-color: #6c757d;
+}
+
+.secondary-btn:hover {
+    background-color: #545b62;
+}
+
+.success-btn {
+    background-color: #28a745;
+}
+
+.success-btn:hover {
+    background-color: #1e7e34;
+}
+
+#pairResults {
+    margin-top: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+tr:hover {
+    background-color: #e9ecef;
+}
+
+.info-text {
+    color: #666;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.student-count {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/* Class Selection */
+.class-selection {
+    margin-bottom: 20px;
+}
+
+/* Pair Creation Section */
+.pair-creation-section {
+    margin-bottom: 40px;
+}
+
+.class-selection-main {
+    margin-bottom: 30px;
+}
+
+.class-selection-main label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.class-selection-main select {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.class-selection-main select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+
+/* Classroom Layout Styles */
+.classroom-layout {
+    margin-top: 30px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+}
+
+.blackboard {
+    background: linear-gradient(135deg, #4a7c59 0%, #3d6b47 100%);
+    height: 50px;
+    width: 100%;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border: 3px solid #2d4a35;
+    transition: all 0.3s ease;
+}
+
+.blackboard:hover {
+    background: linear-gradient(135deg, #5a8c69 0%, #4d7b57 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.blackboard-text {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.classroom-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 15px;
+    max-width: 100%;
+}
+
+.desk-pair {
+    background-color: white;
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.desk-pair:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.student-name {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin: 4px 0;
+    text-align: center;
+    font-weight: 500;
+    font-size: 14px;
+    color: #333;
+}
+
+.student-name.empty {
+    background-color: #e9ecef;
+    color: #6c757d;
+    font-style: italic;
+    border-style: dashed;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+select:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+/* Class Management Styles */
+.class-list-section {
+    margin-bottom: 30px;
+}
+
+.no-classes {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 20px;
+}
+
+.class-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+}
+
+.class-info h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.class-info p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.class-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-btn {
+    background-color: #ffc107;
+    color: #212529;
+    padding: 8px 16px;
+    font-size: 14px;
+    margin: 0;
+}
+
+.edit-btn:hover {
+    background-color: #e0a800;
+}
+
+.use-btn {
+    background-color: #17a2b8;
+    padding: 8px 16px;
+    font-size: 14px;
+    margin: 0;
+}
+
+.use-btn:hover {
+    background-color: #138496;
+}
+
+.absence-btn {
+    background-color: #fd7e14;
+    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+    margin: 0;
+}
+
+.absence-btn:hover {
+    background-color: #e8660c;
+}
+
+.danger-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.danger-btn:hover {
+    background-color: #c82333;
+}
+
+/* Edit Section */
+.edit-section {
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #f8f9ff;
+}
+
+.edit-class-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.edit-class-header span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.student-edit-section h4 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.student-edit-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.student-edit-item input {
+    flex: 1;
+    margin: 0;
+}
+
+.remove-btn {
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 12px;
+    font-size: 14px;
+    margin: 0;
+}
+
+.remove-btn:hover {
+    background-color: #c82333;
+}
+
+.add-student-section {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    align-items: end;
+}
+
+.add-student-section input {
+    flex: 1;
+    margin: 0;
+}
+
+.add-student-section button {
+    margin: 0;
+    padding: 10px 20px;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+        padding-top: 80px;
+    }
+    
+    .container {
+        padding: 20px;
+    }
+    
+    .hamburger-menu {
+        width: 45px;
+        height: 45px;
+        top: 15px;
+        left: 15px;
+    }
+    
+    .nav-menu {
+        min-width: 250px;
+        padding: 25px;
+        margin: 0 15px;
+    }
+    
+    .nav-menu h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .nav-menu nav a {
+        padding: 15px 20px;
+        font-size: 15px;
+    }
+    
+    button {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+    }
+    
+    .button-group {
+        text-align: left;
+    }
+    
+    .class-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .class-actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+    
+    .class-actions button {
+        flex: 1;
+        margin: 0 5px;
+    }
+    
+    .edit-class-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .student-edit-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
+    }
+    
+    .add-student-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    
+    .classroom-layout {
+        padding: 15px;
+    }
+    
+    .blackboard {
+        height: 40px;
+        margin-bottom: 15px;
+    }
+    
+    .blackboard-text {
+        font-size: 18px;
+    }
+    
+    .classroom-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(10, 1fr);
+        gap: 12px;
+    }
+    
+    .desk-pair {
+        padding: 8px;
+        min-height: 60px;
+    }
+    
+    .student-name {
+        padding: 6px 8px;
+        font-size: 13px;
+    }
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+    from {opacity: 0; transform: translateY(-30px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    border-radius: 10px 10px 0 0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.modal-close {
+    color: #666;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.modal-close:hover {
+    color: #333;
+    background-color: #e9ecef;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-body p {
+    margin: 0 0 20px 0;
+    font-weight: bold;
+    color: #007bff;
+    font-size: 18px;
+}
+
+.modal-body h4 {
+    margin: 0 0 15px 0;
+    color: #333;
+}
+
+.absence-student-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.absence-student-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    margin: 5px 0;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+.absence-student-item:hover {
+    background-color: #e9ecef;
+}
+
+.absence-student-item input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.absence-student-item label {
+    cursor: pointer;
+    margin: 0;
+    flex: 1;
+    font-weight: normal;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
+}
